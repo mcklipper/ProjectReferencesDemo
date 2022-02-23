@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectReferencesDemo.Services.Data;
+using ProjectReferencesDemo.Services.Models;
 using ProjectReferencesDemo.Web.Models;
 using System.Diagnostics;
 
@@ -6,21 +8,34 @@ namespace ProjectReferencesDemo.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            this.context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var customers = context.Customers.ToList();
+
+            return View(customers);
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult Create()
         {
-            return View();
+            return View(new Customer());
+        }
+
+        [HttpPost]
+        public IActionResult Create(Customer newCustomer)
+        {
+            newCustomer.DateOfRegistration = DateTime.Now;
+            context.Customers.Add(newCustomer);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

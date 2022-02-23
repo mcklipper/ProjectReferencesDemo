@@ -1,0 +1,47 @@
+﻿@model ProjectReferencesDemo.Services.Models.Customer
+
+@{
+    ViewData["Title"] = "Új ügyfél felvétele";
+}
+
+<h1>Ügyfél felvétele</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-2">
+                <label asp-for="Name" class="control-label">Név</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="Age" class="control-label">Kor</label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="mb-2 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Gender" /> Férfi-e
+                </label>
+            </div>
+
+            <div class="mb-2">
+                <input type="submit" value="Felvétel" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-danger" asp-action="Index">Mégse</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

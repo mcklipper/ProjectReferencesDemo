@@ -1,8 +1,39 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<ProjectReferencesDemo.Services.Models.Customer>
+
+@{
+    ViewData["Title"] = "Ügyfelek";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<a class="btn btn-success mb-4" asp-action="Create" asp-controller="Home">
+    Új ügyfél felvétele
+</a>
+
+<table class="table table-hover">
+
+    <tr>
+        <th>Név</th>
+        <th>Belépés időpontja</th>
+        <th>Kor</th>
+        <th>Nem</th>
+    </tr>
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>@customer.Name</td>
+                <td>@customer.DateOfRegistration.ToString("yyyy. MMMM dd. HH:mm")</td>
+                <td>@customer.Age</td>
+                <td>@(customer.Gender ? "Férfi" : "Nő")</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td class="text-center" colspan="4">Nincs megjeleníthető ügyfél!</td>
+        </tr>
+    }
+
+</table>
