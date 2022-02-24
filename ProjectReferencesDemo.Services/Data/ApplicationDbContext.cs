@@ -8,9 +8,15 @@ namespace ProjectReferencesDemo.Services.Data
     {
         public DbSet<Customer> Customers { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseSqlServer(
+                "Server=(localdb)\\mssqllocaldb;" +
+                "Database=aspnet-ProjectReferencesDemo.Web-DD62A3E4-4593-4C6A-8194-26752105AB04;" +
+                "Trusted_Connection=True;MultipleActiveResultSets=true"
+            );
+
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }
