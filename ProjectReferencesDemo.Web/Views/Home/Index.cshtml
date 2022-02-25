@@ -16,6 +16,7 @@
         <th>Ügyféltípus</th>
         <th>Kor</th>
         <th>Nem</th>
+        <th>Műveletek</th>
     </tr>
 
     @if (Model != null && Model.Count() > 0)
@@ -28,13 +29,16 @@
                 <td>@customer.CustomerType.Name</td>
                 <td>@customer.Age</td>
                 <td>@(customer.Gender ? "Férfi" : "Nő")</td>
+                <td>
+                    <a asp-action="Remove" asp-controller="Home" asp-route-id="@customer.Id">Törlés</a>
+                </td>
             </tr>
         }
     }
     else
     {
         <tr>
-            <td class="text-center" colspan="4">Nincs megjeleníthető ügyfél!</td>
+            <td class="text-center" colspan="6">Nincs megjeleníthető ügyfél!</td>
         </tr>
     }
 

@@ -1,0 +1,50 @@
+﻿@model ProjectReferencesDemo.Services.Models.Customer
+
+@{
+    ViewData["Title"] = "Remove";
+}
+
+<h1>Törlés</h1>
+
+<h3>Biztosan törli a következő ügyfelet?</h3>
+<div>
+    <h4>Ügyfél</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Azonosító
+        </dt>
+        <dd class = "col-sm-10">
+            @Model?.Id
+        </dd>
+        <dt class = "col-sm-2">
+            Név
+        </dt>
+        <dd class = "col-sm-10">
+            @Model?.Name
+        </dd>
+        <dt class = "col-sm-2">
+            Belépés Időpontja
+        </dt>
+        <dd class = "col-sm-10">
+            @Model?.DateOfRegistration
+        </dd>
+        <dt class = "col-sm-2">
+            Kor
+        </dt>
+        <dd class = "col-sm-10">
+            @Model?.Age
+        </dd>
+        <dt class = "col-sm-2">
+            Nem
+        </dt>
+        <dd class = "col-sm-10">
+            @Model?.Gender
+        </dd>
+    </dl>
+    
+    <form asp-action="Remove">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a class="btn btn-primary" asp-action="Index">Mégse</a>
+    </form>
+</div>

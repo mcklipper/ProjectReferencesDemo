@@ -56,6 +56,29 @@ namespace ProjectReferencesDemo.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult Remove(int id)
+        {
+            var customer = context
+                .Customers
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+
+            if (customer == null)
+                return NotFound();
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Remove(Customer customer)
+        {
+            context.Customers.Remove(customer);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
