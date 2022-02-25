@@ -13,6 +13,7 @@
     <tr>
         <th>Név</th>
         <th>Belépés időpontja</th>
+        <th>Ügyféltípus</th>
         <th>Kor</th>
         <th>Nem</th>
     </tr>
@@ -24,6 +25,7 @@
             <tr>
                 <td>@customer.Name</td>
                 <td>@customer.DateOfRegistration.ToString("yyyy. MMMM dd. HH:mm")</td>
+                <td>@customer.CustomerType.Name</td>
                 <td>@customer.Age</td>
                 <td>@(customer.Gender ? "Férfi" : "Nő")</td>
             </tr>

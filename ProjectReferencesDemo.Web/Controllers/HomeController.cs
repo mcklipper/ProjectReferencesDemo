@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjectReferencesDemo.Services.Data;
 using ProjectReferencesDemo.Services.Models;
 using ProjectReferencesDemo.Web.Models;
@@ -17,7 +18,10 @@ namespace ProjectReferencesDemo.Web.Controllers
 
         public IActionResult Index()
         {
-            var customers = context.Customers.ToList();
+            var customers = context
+                .Customers
+                .Include(x => x.CustomerType)
+                .ToList();
 
             return View(customers);
         }
@@ -25,14 +29,28 @@ namespace ProjectReferencesDemo.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new Customer());
+            return View(new CreateCustomerViewModel()
+            {
+                Customer = new(),
+                CustomerTypes = context.CustomerTypes.ToList()
+            });
         }
 
         [HttpPost]
-        public IActionResult Create(Customer newCustomer)
+        public IActionResult Create(CreateCustomerViewModel viewModel)
         {
-            newCustomer.DateOfRegistration = DateTime.Now;
-            context.Customers.Add(newCustomer);
+            var customerType = context
+                .CustomerTypes
+                .Where(x => x.Id == viewModel.CustomerTypeId)
+                .FirstOrDefault();
+
+            if (customerType == null)
+                return BadRequest();
+
+            viewModel.Customer.DateOfRegistration = DateTime.Now;
+            viewModel.Customer.CustomerType = customerType;
+
+            context.Customers.Add(viewModel.Customer);
             context.SaveChanges();
 
             return RedirectToAction("Index");
