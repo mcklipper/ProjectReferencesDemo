@@ -19,5 +19,7 @@ namespace ProjectReferencesDemo.Services.Models
         public int Age { get; set; }
 
         public bool Gender { get; set; }
+
+        public CustomerType CustomerType { get; set; }
     }
 }

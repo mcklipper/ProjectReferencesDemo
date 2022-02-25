@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectReferencesDemo.Services.Data;
 
@@ -11,9 +12,10 @@ using ProjectReferencesDemo.Services.Data;
 namespace ProjectReferencesDemo.Services.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220225173438_CreateCustomerType")]
+    partial class CreateCustomerType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,9 +233,6 @@ namespace ProjectReferencesDemo.Services.Data.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerTypeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateOfRegistration")
                         .HasColumnType("datetime2");
 
@@ -246,8 +245,6 @@ namespace ProjectReferencesDemo.Services.Data.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerTypeId");
 
                     b.ToTable("Customers");
                 });
@@ -319,17 +316,6 @@ namespace ProjectReferencesDemo.Services.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ProjectReferencesDemo.Services.Models.Customer", b =>
-                {
-                    b.HasOne("ProjectReferencesDemo.Services.Models.CustomerType", "CustomerType")
-                        .WithMany()
-                        .HasForeignKey("CustomerTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerType");
                 });
 #pragma warning restore 612, 618
         }
