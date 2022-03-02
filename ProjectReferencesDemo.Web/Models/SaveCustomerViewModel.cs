@@ -2,7 +2,7 @@
 
 namespace ProjectReferencesDemo.Web.Models
 {
-    public class CreateCustomerViewModel
+    public class SaveCustomerViewModel
     {
         public Customer Customer { get; set; }
 

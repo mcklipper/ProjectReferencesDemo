@@ -7,7 +7,7 @@
 
 3) Index módosítása 
 	-> csak bejelentkezett felhasználó érhesse el
-	-> csak tanácsadói joggal rendelkező felhasználó érhesse el
+	-> // csak tanácsadói joggal rendelkező felhasználó érhesse el //
 	-> csak az aktuális felhasználóhoz tartozó ügyfelek jelenjenek meg
 
 4) Create módosítása

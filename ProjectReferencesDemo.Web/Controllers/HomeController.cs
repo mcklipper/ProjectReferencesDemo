@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectReferencesDemo.Services.Data;
 using ProjectReferencesDemo.Services.Models;
@@ -7,20 +9,26 @@ using System.Diagnostics;
 
 namespace ProjectReferencesDemo.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext context;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var user = await userManager.GetUserAsync(User);
+
             var customers = context
                 .Customers
                 .Include(x => x.CustomerType)
+                .Where(x => x.User == user)
                 .ToList();
 
             return View(customers);
@@ -29,7 +37,7 @@ namespace ProjectReferencesDemo.Web.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new CreateCustomerViewModel()
+            return View(new SaveCustomerViewModel()
             {
                 Customer = new(),
                 CustomerTypes = context.CustomerTypes.ToList()
@@ -37,8 +45,10 @@ namespace ProjectReferencesDemo.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CreateCustomerViewModel viewModel)
+        public async Task<IActionResult> Create(SaveCustomerViewModel viewModel)
         {
+            var user = await userManager.GetUserAsync(User);
+
             var customerType = context
                 .CustomerTypes
                 .Where(x => x.Id == viewModel.CustomerTypeId)
@@ -48,6 +58,7 @@ namespace ProjectReferencesDemo.Web.Controllers
                 return BadRequest();
 
             viewModel.Customer.DateOfRegistration = DateTime.Now;
+            viewModel.Customer.User = user;
             viewModel.Customer.CustomerType = customerType;
 
             context.Customers.Add(viewModel.Customer);
@@ -57,7 +68,7 @@ namespace ProjectReferencesDemo.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Remove(int id)
+        public async Task<IActionResult> Remove(int id)
         {
             var customer = context
                 .Customers
@@ -66,6 +77,10 @@ namespace ProjectReferencesDemo.Web.Controllers
 
             if (customer == null)
                 return NotFound();
+
+            var user = await userManager.GetUserAsync(User);
+            if (customer.User != user)
+                return Forbid();
 
             return View(customer);
         }
@@ -80,7 +95,7 @@ namespace ProjectReferencesDemo.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var customer = context
                 .Customers
@@ -91,7 +106,11 @@ namespace ProjectReferencesDemo.Web.Controllers
             if (customer == null)
                 return NotFound();
 
-            return View(new CreateCustomerViewModel()
+            var user = await userManager.GetUserAsync(User);
+            if (customer.User != user)
+                return Forbid();
+
+            return View(new SaveCustomerViewModel()
             {
                 Customer = customer,
                 CustomerTypes = context.CustomerTypes.ToList(),
@@ -100,7 +119,7 @@ namespace ProjectReferencesDemo.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(CreateCustomerViewModel viewModel)
+        public IActionResult Edit(SaveCustomerViewModel viewModel)
         {
             var customerinDb = context
                 .Customers

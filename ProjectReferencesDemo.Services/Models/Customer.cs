@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectReferencesDemo.Services.Models
 {
@@ -21,5 +22,7 @@ namespace ProjectReferencesDemo.Services.Models
         public bool Gender { get; set; }
 
         public CustomerType CustomerType { get; set; }
+
+        public IdentityUser User { get; set; }
     }
 }
