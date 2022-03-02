@@ -1,0 +1,58 @@
+﻿@model ProjectReferencesDemo.Web.Models.CreateCustomerViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Ügyfél szerkesztése</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            @Html.HiddenFor(x => x.Customer.Id)
+
+            <div class="mb-2">
+                <label asp-for="Customer.Name" class="control-label">Név</label>
+                <input asp-for="Customer.Name" class="form-control" />
+                <span asp-validation-for="Customer.Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="Customer.Age" class="control-label">Kor</label>
+                <input asp-for="Customer.Age" class="form-control" />
+                <span asp-validation-for="Customer.Age" class="text-danger"></span>
+            </div>
+
+            <div class="mb-2 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Customer.Gender" /> Férfi-e
+                </label>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="Customer.CustomerType" class="control-label">Ügyfél Típusa</label>
+                <select asp-for="CustomerTypeId" class="form-select">
+                    @foreach (var type in Model.CustomerTypes)
+                    {
+                        <option value="@type.Id">@type.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-2">
+                <input type="submit" value="Mentés" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-danger" asp-action="Index">Mégse</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

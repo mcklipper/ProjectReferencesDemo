@@ -1,0 +1,20 @@
+﻿1) Ügyfelek módosítása 
+	-> legyenek hozzárendelve egy felhasználóhoz 
+	(Ügyfél mmodell kiegészítése egy felhasználó tulajdonsággal)
+
+2) Jog (szerep) bevezetése
+	-> adatbázisba migrálni tanácsadói jogot
+
+3) Index módosítása 
+	-> csak bejelentkezett felhasználó érhesse el
+	-> csak tanácsadói johhal rendelkező felhasználó érhesse el
+	-> csak az aktuális felhasználóhoz tartozó ügyfelek jelenjenek meg
+
+4) Create módosítása
+	-> ha a felhasználó felvesz egy új ügyfelet, az a saját ügyfelének számítson automatikusan
+
+5) Delete és Edit módosítása
+	-> a felhasználó csak a saját ügyfeleit szerkeszthesse és törölhesse
+
+6) Biztonságos törlés
+	-> Törlés esetén az ügyfelet mentse el az alkalmazás egy audit (archív) táblába

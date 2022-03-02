@@ -30,6 +30,7 @@
                 <td>@customer.Age</td>
                 <td>@(customer.Gender ? "Férfi" : "Nő")</td>
                 <td>
+                    <a asp-action="Edit" asp-controller="Home" asp-route-id="@customer.Id">Szerkesztés</a> | 
                     <a asp-action="Remove" asp-controller="Home" asp-route-id="@customer.Id">Törlés</a>
                 </td>
             </tr>
