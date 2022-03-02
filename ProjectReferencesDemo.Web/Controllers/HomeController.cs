@@ -67,13 +67,61 @@ namespace ProjectReferencesDemo.Web.Controllers
             if (customer == null)
                 return NotFound();
 
-            return View();
+            return View(customer);
         }
 
         [HttpPost]
         public IActionResult Remove(Customer customer)
         {
             context.Customers.Remove(customer);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var customer = context
+                .Customers
+                .Include(x => x.CustomerType)
+                .Where(x => x.Id == id)
+                .FirstOrDefault();
+
+            if (customer == null)
+                return NotFound();
+
+            return View(new CreateCustomerViewModel()
+            {
+                Customer = customer,
+                CustomerTypes = context.CustomerTypes.ToList(),
+                CustomerTypeId = customer.CustomerType.Id
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CreateCustomerViewModel viewModel)
+        {
+            var customerinDb = context
+                .Customers
+                .Where(x => x.Id == viewModel.Customer.Id)
+                .FirstOrDefault();
+
+            if (customerinDb == null)
+                return BadRequest();
+
+            customerinDb.Name = viewModel.Customer.Name;
+            customerinDb.Gender = viewModel.Customer.Gender;
+            customerinDb.Age = viewModel.Customer.Age;
+
+            var customerType = context
+                .CustomerTypes
+                .Where(x => x.Id == viewModel.CustomerTypeId)
+                .SingleOrDefault();
+
+            if (customerType != null)
+                customerinDb.CustomerType = customerType;
+
             context.SaveChanges();
 
             return RedirectToAction("Index");
