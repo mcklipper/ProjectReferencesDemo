@@ -14,11 +14,16 @@ namespace ProjectReferencesDemo.Web.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public HomeController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public HomeController(
+            ApplicationDbContext context, 
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             this.context = context;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public async Task<IActionResult> Index()
