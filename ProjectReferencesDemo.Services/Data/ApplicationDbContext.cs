@@ -7,8 +7,8 @@ namespace ProjectReferencesDemo.Services.Data
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerAudit> CustomersAudit { get; set; }
         public DbSet<CustomerType> CustomerTypes { get; set; }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

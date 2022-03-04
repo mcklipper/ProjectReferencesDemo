@@ -44,6 +44,15 @@
     </dl>
     
     <form asp-action="Remove">
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.Age)
+        @Html.HiddenFor(x => x.Name)
+        @Html.HiddenFor(x => x.DateOfRegistration)
+        @Html.HiddenFor(x => x.Gender)
+        @Html.HiddenFor(x => x.CustomerType.Id)
+        @Html.HiddenFor(x => x.User.Id)
+
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a class="btn btn-primary" asp-action="Index">Mégse</a>
     </form>

@@ -72,6 +72,8 @@ namespace ProjectReferencesDemo.Web.Controllers
         {
             var customer = context
                 .Customers
+                .Include(x => x.CustomerType)
+                .Include(x => x.User)
                 .Where(x => x.Id == id)
                 .FirstOrDefault();
 
@@ -86,10 +88,26 @@ namespace ProjectReferencesDemo.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Remove(Customer customer)
+        public async Task<IActionResult> Remove(Customer customer)
         {
-            context.Customers.Remove(customer);
-            context.SaveChanges();
+            var user = await userManager.FindByIdAsync(customer.User.Id);
+            var customerType = await context
+                .CustomerTypes
+                .FindAsync(customer.CustomerType.Id);
+
+            await context.CustomersAudit.AddAsync(new CustomerAudit()
+            {
+                Age = customer.Age,
+                CustomerType = customerType,
+                DateOfQuit = DateTime.Now,
+                DateOfRegistration = customer.DateOfRegistration,
+                Gender = customer.Gender,
+                Name = customer.Name,
+                User = user
+            });
+
+            context.Customers.Remove(await context.Customers.FindAsync(customer.Id));
+            await context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
