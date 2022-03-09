@@ -30,11 +30,25 @@ namespace ProjectReferencesDemo.Web.Controllers
         {
             var user = await userManager.GetUserAsync(User);
 
-            var customers = context
-                .Customers
-                .Include(x => x.CustomerType)
-                .Where(x => x.User == user)
-                .ToList();
+            if (!await userManager.IsInRoleAsync(user, "Consultant"))
+                return Forbid();
+
+            List<Customer> customers;
+            if (!await userManager.IsInRoleAsync(user, "Admin"))
+            {
+                customers = context
+                    .Customers
+                    .Include(x => x.CustomerType)
+                    .Where(x => x.User == user)
+                    .ToList();
+            }
+            else
+            {
+                customers = context
+                    .Customers
+                    .Include(x => x.CustomerType)
+                    .ToList();
+            }
 
             return View(customers);
         }
