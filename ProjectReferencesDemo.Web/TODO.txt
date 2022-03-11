@@ -1,16 +1,13 @@
-﻿1) Biztonságos törlés (házi)
-	-> Törlés esetén az ügyfelet mentse el az alkalmazás egy audit (archív) táblába
+﻿------------------------------------------------------------------------------
+-- A Program.cs-t módosítottam, már működik a bejelentkezés és regisztráció --
+------------------------------------------------------------------------------
 
-2) Jog (szerep) bevezetése
-	-> adatbázisba migrálni admin jogot
-	-> adatbázisba migrálni tanácsadói jogot
-
-3) Index módosítása 
-	-> csak tanácsadói joggal rendelkező felhasználó érhesse el
-
-4) Admin felületek létrehozása
-	-> minden ügyfelet lát
-	-> minden ügyfelet tud törölni és szerkeszteni
-	-> tud törölni véglegesen (biztonsági mentés nélkül)
-	-> minden felhasználót lát
+1) Admin felületek létrehozása
+	-> minden ügyfelet lát (tesztelni)
+	-> minden ügyfelet tud törölni és szerkeszteni (tesztelni)
+	-> tud törölni véglegesen (tesztelni)
+	-> minden felhasználót lát (tesztelni)
 	-> tudja módosítani a felhasználók jogosultságát
+		- (UserManager segítségével lehet jogokat rendelni és elvenni felhasználóktól)
+
+2) Edit és Delete létrehozása felhasználókhoz (Adminok számára)

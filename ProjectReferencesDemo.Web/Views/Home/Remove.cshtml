@@ -1,4 +1,4 @@
-﻿@model ProjectReferencesDemo.Services.Models.Customer
+﻿@model RemoveCustomerViewModel
 
 @{
     ViewData["Title"] = "Remove";
@@ -15,43 +15,50 @@
             Azonosító
         </dt>
         <dd class = "col-sm-10">
-            @Model?.Id
+            @Model?.Customer.Id
         </dd>
         <dt class = "col-sm-2">
             Név
         </dt>
         <dd class = "col-sm-10">
-            @Model?.Name
+            @Model?.Customer.Name
         </dd>
         <dt class = "col-sm-2">
             Belépés Időpontja
         </dt>
         <dd class = "col-sm-10">
-            @Model?.DateOfRegistration
+            @Model?.Customer.DateOfRegistration
         </dd>
         <dt class = "col-sm-2">
             Kor
         </dt>
         <dd class = "col-sm-10">
-            @Model?.Age
+            @Model?.Customer.Age
         </dd>
         <dt class = "col-sm-2">
             Nem
         </dt>
         <dd class = "col-sm-10">
-            @Model?.Gender
+            @Model?.Customer.Gender
         </dd>
     </dl>
     
     <form asp-action="Remove">
 
-        @Html.HiddenFor(x => x.Id)
-        @Html.HiddenFor(x => x.Age)
-        @Html.HiddenFor(x => x.Name)
-        @Html.HiddenFor(x => x.DateOfRegistration)
-        @Html.HiddenFor(x => x.Gender)
-        @Html.HiddenFor(x => x.CustomerType.Id)
-        @Html.HiddenFor(x => x.User.Id)
+        @Html.HiddenFor(x => x.Customer.Id)
+        @Html.HiddenFor(x => x.Customer.Age)
+        @Html.HiddenFor(x => x.Customer.Name)
+        @Html.HiddenFor(x => x.Customer.DateOfRegistration)
+        @Html.HiddenFor(x => x.Customer.Gender)
+        @Html.HiddenFor(x => x.Customer.CustomerType.Id)
+        @Html.HiddenFor(x => x.Customer.User.Id)
+
+        <div class="form-check @(Model.IsAdmin ? "" : "invisible")">
+          <input disabled="@(!Model.IsAdmin)" asp-for="SafeDelete" class="form-check-input" type="checkbox"  id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Legyen-e biztonsági mentés (alapértelmezett igen)
+          </label>
+        </div>
 
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a class="btn btn-primary" asp-action="Index">Mégse</a>

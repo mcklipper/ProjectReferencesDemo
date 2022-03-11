@@ -100,32 +100,40 @@ namespace ProjectReferencesDemo.Web.Controllers
                 return NotFound();
 
             var user = await userManager.GetUserAsync(User);
-            if (customer.User != user)
+            bool isAdmin = await userManager.IsInRoleAsync(user, "Admin");
+            if (customer.User != user && !isAdmin)
                 return Forbid();
 
-            return View(customer);
+            return View(new RemoveCustomerViewModel
+            {
+                Customer = customer,
+                IsAdmin = isAdmin
+            });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Remove(Customer customer)
+        public async Task<IActionResult> Remove(RemoveCustomerViewModel viewModel)
         {
-            var user = await userManager.FindByIdAsync(customer.User.Id);
-            var customerType = await context
-                .CustomerTypes
-                .FindAsync(customer.CustomerType.Id);
-
-            await context.CustomersAudit.AddAsync(new CustomerAudit()
+            if (viewModel.SafeDelete)
             {
-                Age = customer.Age,
-                CustomerType = customerType,
-                DateOfQuit = DateTime.Now,
-                DateOfRegistration = customer.DateOfRegistration,
-                Gender = customer.Gender,
-                Name = customer.Name,
-                User = user
-            });
+                var user = await userManager.FindByIdAsync(viewModel.Customer.User.Id);
+                var customerType = await context
+                    .CustomerTypes
+                    .FindAsync(viewModel.Customer.CustomerType.Id);
 
-            context.Customers.Remove(await context.Customers.FindAsync(customer.Id));
+                await context.CustomersAudit.AddAsync(new CustomerAudit()
+                {
+                    Age = viewModel.Customer.Age,
+                    CustomerType = customerType,
+                    DateOfQuit = DateTime.Now,
+                    DateOfRegistration = viewModel.Customer.DateOfRegistration,
+                    Gender = viewModel.Customer.Gender,
+                    Name = viewModel.Customer.Name,
+                    User = user
+                });
+            }
+
+            context.Customers.Remove(await context.Customers.FindAsync(viewModel.Customer.Id));
             await context.SaveChangesAsync();
 
             return RedirectToAction("Index");
@@ -144,7 +152,7 @@ namespace ProjectReferencesDemo.Web.Controllers
                 return NotFound();
 
             var user = await userManager.GetUserAsync(User);
-            if (customer.User != user)
+            if (customer.User != user && !await userManager.IsInRoleAsync(user, "Admin"))
                 return Forbid();
 
             return View(new SaveCustomerViewModel()

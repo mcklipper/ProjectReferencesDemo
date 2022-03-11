@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Felhasználók</h1>
+
+<table>
+
+    <tr>
+        <th>E-Mail</th>
+        <th>Felhasználónév</th>
+        <th>Műveletek</th>
+    </tr>
+
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.UserName</td>
+            <td>Szerepek kezelése</td>
+        </tr>
+    }
+
+</table>
+
