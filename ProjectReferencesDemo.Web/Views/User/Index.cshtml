@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+﻿@model IEnumerable<UsersViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -6,22 +6,38 @@
 
 <h1>Felhasználók</h1>
 
-<table>
 
-    <tr>
-        <th>E-Mail</th>
-        <th>Felhasználónév</th>
-        <th>Műveletek</th>
-    </tr>
+<form asp-action="EditRoles">
+<input class="btn btn-success" type="submit" value="Jogosultságok Mentése"/>
 
-    @foreach (var user in Model)
+<div class="row">
+
+    @foreach (var vm in Model)
     {
-        <tr>
-            <td>@user.Email</td>
-            <td>@user.UserName</td>
-            <td>Szerepek kezelése</td>
-        </tr>
+        <div class="col-sm-3 p-4">
+
+            <div class="card">
+              <img src="~/imgs/avatar.png" class="card-img-top">
+              <div class="card-body">
+                <h5 class="card-title">@vm.User.UserName</h5>
+
+                @foreach (var rvm in vm.Roles)
+                {
+                    <div class="form-check">
+                        <input asp-for="@rvm.IsInRole" class="form-check-input" type="checkbox">
+                        <label class="form-check-label" for="flexCheckDefault">
+                        @rvm.Role.Name
+                        </label>
+                    </div>
+                }
+            
+                <a asp-controller="user" asp-action="Edit" class="btn btn-primary">Szerkesztése</a>
+                <a asp-controller="user" asp-action="Remove" class="btn btn-danger">Törlés</a>
+              </div>
+            </div>
+
+        </div>
     }
 
-</table>
-
+</div>
+</form>

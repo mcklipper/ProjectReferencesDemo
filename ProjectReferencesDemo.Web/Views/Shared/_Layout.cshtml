@@ -22,7 +22,10 @@
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Ügyfelek</a>
+                                <a class="nav-link" asp-controller="Home">Ügyfelek</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="User">Felhasználók</a>
                             </li>
                         }
                     </ul>

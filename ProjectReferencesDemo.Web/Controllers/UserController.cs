@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjectReferencesDemo.Services.Data;
+using ProjectReferencesDemo.Web.Models;
 
 namespace ProjectReferencesDemo.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -19,13 +20,34 @@ namespace ProjectReferencesDemo.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = await userManager.GetUserAsync(User);
-            if (!await userManager.IsInRoleAsync(user, "Admin"))
-                return Forbid();
+            List<UsersViewModel> users = new();
+            var allRoles = context.Roles.ToList();
 
-            var users = context.Users.ToList();
+            foreach (var user in context.Users)
+            {
+                var roles = new List<EditRoleViewModel>();
+                foreach (var role in allRoles)
+                {
+                    roles.Add(new(
+                        role, 
+                        await userManager.IsInRoleAsync(user, role.Name)
+                    ));
+                }
+
+                users.Add(new()
+                {
+                    User = user,
+                    Roles = roles
+                });
+            }
 
             return View(users);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRoles(List<UsersViewModel> users)
+        {
+            return RedirectToAction("Index");
         }
     }
 }
