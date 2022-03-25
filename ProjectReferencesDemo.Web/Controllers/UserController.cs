@@ -44,9 +44,46 @@ namespace ProjectReferencesDemo.Web.Controllers
             return View(users);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditRoles(List<UsersViewModel> users)
+        [HttpGet]
+        public async Task<IActionResult> Remove(string id)
         {
+            var user = await userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return NotFound();
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Remove(IdentityUser user)
+        {
+            var userInDb = await userManager.FindByIdAsync(user.Id);
+
+            if (userInDb == null)
+                return BadRequest();
+
+            await userManager.DeleteAsync(userInDb);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRoles(string id, UsersViewModel vm)
+        {
+            var user = await userManager.FindByIdAsync(id);
+
+            foreach (var rolevm in vm.Roles)
+            {
+                bool isInRoleInDb = await userManager.IsInRoleAsync(user, rolevm.Role.Name);
+
+                if (rolevm.IsInRole && !isInRoleInDb)
+                    await userManager.AddToRoleAsync(user, rolevm.Role.Name);
+
+                else if (!rolevm.IsInRole && isInRoleInDb)
+                    await userManager.RemoveFromRoleAsync(user, rolevm.Role.Name);
+            }
+
             return RedirectToAction("Index");
         }
     }

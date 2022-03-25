@@ -1,0 +1,28 @@
+﻿@model UsersViewModel
+
+<div class="card">
+    <img src="~/imgs/avatar.png" class="card-img-top">
+    <div class="card-body">
+        <h5 class="card-title">@Model?.User.UserName</h5>
+
+        <form asp-action="EditRoles" asp-route-id="@Model.User.Id" method="post">
+
+            @for (var i = 0; i < Model.Roles.Count; i++)
+            {
+                <input type="hidden" name="Roles[@i].Role.Name" asp-for="@Model.Roles[i].Role.Name"/>
+                <div class="form-check">
+                    <input asp-for="@Model.Roles[i].IsInRole" name="Roles[@i].IsInRole" class="form-check-input" type="checkbox">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        @Model.Roles[i].Role.Name
+                    </label>
+                </div>
+            }
+
+            <input type="submit" class="btn btn-success mb-2" value="Mentés" />
+
+        </form>
+            
+        <a asp-controller="user" asp-action="Edit" class="btn btn-primary mr-2">Szerkesztése</a>
+        <a asp-controller="user" asp-action="Remove" asp-route-id="@Model.User.Id" class="btn btn-danger">Törlés</a>
+    </div>
+</div>

@@ -12,5 +12,10 @@ namespace ProjectReferencesDemo.Web.Models
             Role = role;
             IsInRole = isInRole;
         }
+
+        public EditRoleViewModel()
+        {
+
+        }
     }
 }

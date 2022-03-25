@@ -1,0 +1,50 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+
+@{
+    ViewData["Title"] = "Remove";
+}
+
+<h1>Törlés</h1>
+
+<h3>Biztosan törölni szeretné a következő felhasználót?</h3>
+<div>
+    <h4>Felhasználó</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(u => u.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(u => u.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(u => u.UserName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(u => u.UserName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(u => u.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(u => u.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(u => u.EmailConfirmed)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(u => u.EmailConfirmed)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(u => u.PhoneNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(u => u.PhoneNumber)
+        </dd>
+    </dl>
+    
+    <form asp-action="Remove">
+        <input type="submit" value="Törlés" class="btn btn-danger" /> |
+        <a asp-action="Index">Mégse</a>
+    </form>
+</div>

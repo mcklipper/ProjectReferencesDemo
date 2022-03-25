@@ -3,11 +3,19 @@
 ------------------------------------------------------------------------------
 
 1) Admin felületek létrehozása
-	-> -- minden ügyfelet lát (tesztelni) --
-	-> -- minden ügyfelet tud törölni és szerkeszteni (tesztelni) --
-	-> -- tud törölni véglegesen (tesztelni) --
-	-> minden felhasználót lát (tesztelni)
 	-> tudja módosítani a felhasználók jogosultságát
 		- (UserManager segítségével lehet jogokat rendelni és elvenni felhasználóktól)
 
 2) Edit és Delete létrehozása felhasználókhoz (Adminok számára)
+
+3) Cleanup (jogosultságok ellenőrzése az action-öknél)
+
+4) Biztosítások tábla (és model)
+	- id
+	- név
+	- adókedvezményes-e
+
+5) ügyfél - biztosítás kapcsoló tábla (és model)
+	- ügyfél
+	- biztosítás
+	- havi díj
